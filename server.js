@@ -29,28 +29,12 @@ app.use(
   cors({origin: 'http://localhost:3000'})
 );
 app.use('/read/usernames', addMsgToRequest);
-app.use('/read/username/:username', addMsgToRequest);
 
 app.get('/read/usernames', (req, res) => {
   let usernames = req.users.map(function(user) {
     return {id: user.id, username: user.username};
   });
   res.send(usernames);
-});
-
-app.get('/read/username/:username', (req, res) => {
-  let response;
-  try {
-    let user = req.users.filter((user)=> user.username === req.params.username);
-    if(user.length === 0) {
-      res.send({error: 'user not found'})
-    } else {
-      res.send(user);
-    }
-  } catch(err) {
-    console.log("error", err);
-    res.send({error: err})
-  }
 });
 
 app.use(express.json());
